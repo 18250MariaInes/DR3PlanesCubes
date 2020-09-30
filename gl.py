@@ -12,7 +12,14 @@ import numpy as np
 from numpy import cos, sin, tan
 
 
+
 from obj import Obj
+
+
+OPAQUE = 0
+REFLECTIVE = 1
+TRANSPARENT = 2
+MAX_RECURSION_DEPTH = 3
 
 
 
@@ -213,24 +220,38 @@ class Raytracer(object):
                
                 directionp=(Px, Py, -1)
                 directionp=division(directionp, frobenius(directionp))
-                """print(direction)
-                print(directionp)
-                print("--------------------------------")"""
-                intersectV = None
-                material = None
-
-                for obj in self.scene:
-                    intersect = obj.ray_intersect(self.camPosition, directionp)
-                    if intersect is not None:
-                        if intersect.distance < self.zbuffer[y][x]:
-                            self.zbuffer[y][x] = intersect.distance
-                            material = obj.material
-                            intersectV = intersect
-                #cuando hay un material predeterminado
-                if intersectV is not None:
-                    self.glVertex_coord(x, y,self.pointColor(material, intersectV))
+                
+                self.glVertex_coord(x, y, self.castRay(self.camPosition, directionp))
     
-    def pointColor(self, material, intersect):
+    def reflectVector(self, normal, light_dirp):
+        reflectp=2*(dot(normal, light_dirp[0],light_dirp[1],light_dirp[2]))#funciona
+            
+        reflectp=multiN(reflectp, normal)#funciona
+        
+        reflectp=subtract(reflectp[0], light_dirp[0],reflectp[1], light_dirp[1],reflectp[2], light_dirp[2])
+        return (reflectp)
+    
+    def scene_intercept(self, orig, direction, origObj = None):
+        tempZbuffer = float('inf')
+        intersectV = None
+        material = None
+
+        for obj in self.scene:
+            if obj is not origObj:
+                intersect = obj.ray_intersect(orig, direction)
+                if intersect is not None:
+                    if intersect.distance < tempZbuffer:
+                        tempZbuffer = intersect.distance
+                        material = obj.material
+                        intersectV = intersect
+        return material, intersectV
+
+    def castRay(self, orig, direction, origObj = None, recursion = 0):
+
+        material, intersect = self.scene_intercept(orig, direction, origObj)
+
+        if material is None or recursion >= MAX_RECURSION_DEPTH:
+            return self.clear_color
 
         objectColor = [material.diffuse[2] / 255,
                                 material.diffuse[1] / 255,
@@ -276,24 +297,15 @@ class Raytracer(object):
             print("------------------------------------------------------------------------------")"""
 
             # R = 2 * (N dot L) * N - L
-            #reflect = 2 * np.dot(intersect.normal, light_dirp)
             
-            reflectp=2*(dot(intersect.normal, light_dirp[0],light_dirp[1],light_dirp[2]))#funciona
-            #print(reflectp)
+            #todo esto lo pasó a una función separada
+            reflectp=self.reflectVector(intersect.normal, light_dirp)
+            """reflectp=2*(dot(intersect.normal, light_dirp[0],light_dirp[1],light_dirp[2]))#funciona
             
-            #reflect = np.multiply(reflect, intersect.normal)
-            #print(reflect)
             reflectp=multiN(reflectp, intersect.normal)#funciona
-            """print(reflectp)
-            print("-------------------------------------------------")"""
-            """reflectp
-            print(reflectp)
-            print("-------------------------------------------------")"""
-            #reflect = np.subtract(reflect, light_dirp)
-            #print(reflect)
-            reflectp=subtract(reflectp[0], light_dirp[0],reflectp[1], light_dirp[1],reflectp[2], light_dirp[2])#funciona
-            """print(reflectp)
-            print("---------------------------------------------------------------------")"""
+            
+            reflectp=subtract(reflectp[0], light_dirp[0],reflectp[1], light_dirp[1],reflectp[2], light_dirp[2])#funciona"""
+            
             # spec_intensity: lightIntensity * ( view_dir dot reflect) ** specularidad
             spec_intensity = self.pointLight.intensity * (max(0, dot(view_dirp, reflectp[0],reflectp[1],reflectp[2])) ** material.spec)
 
@@ -302,27 +314,32 @@ class Raytracer(object):
                                   spec_intensity * self.pointLight.color[0] / 255]
 
             #print(specColor)
+            shadMat, shadInter = self.scene_intercept(intersect.point,  light_dirp, intersect.sceneObject)
+            if shadInter is not None and shadInter.distance < np.linalg.norm(np.subtract(self.pointLight.position, intersect.point)):
+                shadow_intensity = 1
 
-            for obj in self.scene:
+            """for obj in self.scene:
                 if obj is not intersect.sceneObject:
                     hit = obj.ray_intersect(intersect.point,  light_dirp)
                     if hit is not None and intersect.distance < frobenius(subtract(self.pointLight.position[0], intersect.point[0],self.pointLight.position[1], intersect.point[1],self.pointLight.position[2], intersect.point[2])):
-                        shadow_intensity = 1
+                        shadow_intensity = 1"""
 
         # Formula de iluminacion
-        """print(diffuseColor + specColor)
-        print(sum(diffuseColor, specColor))"""
-        """print((1 - shadow_intensity) * (diffuseColor + specColor))
-        print(multiN((1 - shadow_intensity),sum(diffuseColor, specColor)))"""
         
-        """print((ambientColor + (1 - shadow_intensity) * (diffuseColor + specColor)))
-        print(sum(ambientColor, multiN((1 - shadow_intensity),sum(diffuseColor, specColor))))"""
-        """print((ambientColor + (1 - shadow_intensity) * (diffuseColor + specColor)) * objectColor)
-        print(multColor(sum(ambientColor, multiN((1 - shadow_intensity),sum(diffuseColor, specColor))),objectColor))
-        print("------------------------------------------------")"""
         #finalColor = (ambientColor + (1 - shadow_intensity) * (diffuseColor + specColor)) * objectColor
-        finalColorp=multColor(sum(ambientColor, multiN((1 - shadow_intensity),sum(diffuseColor, specColor))),objectColor)
-        #Nos aseguramos que no suba el valor de color de 1
+        if material.matType == OPAQUE:
+            finalColorp=sum(ambientColor, multiN((1 - shadow_intensity),sum(diffuseColor, specColor)))
+        elif (material.matType== REFLECTIVE):
+            reflectp= self.reflectVector(intersect.normal, view_dirp)
+            reflectColor = self.castRay(intersect.point, reflectp, intersect.sceneObject, recursion + 1)
+            reflectColor = np.array([reflectColor[2] / 255,
+                                     reflectColor[1] / 255,
+                                     reflectColor[0] / 255])
+            finalColorp= sum(reflectColor, multiN((1-shadow_intensity), specColor))
+        
+
+        #se le aplica color de objeto
+        finalColorp=multColor(finalColorp,objectColor)
 
         r = min(1,finalColorp[0])
         g = min(1,finalColorp[1])

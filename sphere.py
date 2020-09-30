@@ -10,15 +10,18 @@ import numpy as np
 from gl import *
 from mathLib import *
 
-
+OPAQUE = 0
+REFLECTIVE = 1
+TRANSPARENT = 2
 WHITE = color(1,1,1)
 
 class Material(object):
     # Un material como visto en Unity que rige como se comportara con la luz. Como los materiales de roca, ladrillo, entre otros
-    def __init__(self, diffuse = WHITE, spec = 0):
+    def __init__(self, diffuse = WHITE, spec = 0, matType = OPAQUE):
         # color pero se esparce cuando tiene luz
         self.diffuse = diffuse
         self.spec = spec
+        self.matType = matType
 
 
 class Intersect(object): #función que devuelve la distancia de la intersección

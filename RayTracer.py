@@ -8,7 +8,7 @@ Main
 
 from gl import Raytracer, color
 from obj import Obj, Texture
-from sphere import Sphere, Material,PointLight, AmbientLight
+from sphere import *
 
 
 brick = Material(diffuse = color(0.8, 0.25, 0.25 ), spec = 16)
@@ -22,15 +22,24 @@ eyes=Material(diffuse = color(0.90, 0.90, 0.90),spec = 64)
 
 pink_center=Material(diffuse = color(0.976, 0.38, 1))
 pink_bow=Material(diffuse = color(0.984, 0.6, 1), spec = 64)
+mirror = Material(diffuse = color(0.8,0.8,0.8), spec = 64, matType = REFLECTIVE)
 
 
 
-width = 500
-height = 800
+width = 512
+height = 512
 r = Raytracer(width,height)
-r.pointLight = PointLight(position = (-1,2,0), intensity = 1)
+r.glClearColor(0.2, 0.6, 0.8)
+r.glClear()
+r.pointLight = PointLight(position = (-2,2,0), intensity = 1)
 r.ambientLight = AmbientLight(strength = 0.1)
-#dibujo de muñeco de nieve
+
+r.scene.append( Sphere(( 1, 1, -8), 1.5, brick) )
+r.scene.append( Sphere(( 0, 0, -5), 0.5, stone) )
+r.scene.append( Sphere((-3, 3, -10),  2, mirror) )
+r.scene.append( Sphere((-3, -1.5, -10), 1.5, mirror) )
+
+"""#dibujo de muñeco de nieve
 #cuerpo
 r.scene.append( Sphere((0, 0.7,  -5), 0.5, snow) )
 r.scene.append( Sphere((0, 0, -5), 0.6, snow) )
@@ -54,7 +63,7 @@ r.scene.append( Sphere((0.20, 0.57,  -4.55), 0.05, coal) )
 r.scene.append( Sphere((-0.09, 0.9,  -4.5), 0.08, eyes) )
 r.scene.append( Sphere((0.09, 0.9,  -4.5), 0.08, eyes) )
 r.scene.append( Sphere((-0.09, 0.9,  -4.4), 0.03, coal) )
-r.scene.append( Sphere((0.09, 0.9,  -4.4), 0.03, coal) )
+r.scene.append( Sphere((0.09, 0.9,  -4.4), 0.03, coal) )"""
 
 #bow
 """r.scene.append( Sphere((-0.06, 1.005,  -4.1), 0.08, pink_bow) )
