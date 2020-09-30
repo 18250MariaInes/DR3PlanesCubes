@@ -7,7 +7,7 @@ Main
 """
 
 from gl import Raytracer, color
-from obj import Obj, Texture
+from obj import Obj, Texture, Envmap
 from sphere import *
 
 
@@ -22,7 +22,7 @@ eyes=Material(diffuse = color(0.90, 0.90, 0.90),spec = 64)
 
 pink_center=Material(diffuse = color(0.976, 0.38, 1))
 pink_bow=Material(diffuse = color(0.984, 0.6, 1), spec = 64)
-mirror = Material(diffuse = color(0.8,0.8,0.8), spec = 64, matType = REFLECTIVE)
+mirror = Material( spec = 64, matType = REFLECTIVE)
 
 
 
@@ -31,6 +31,7 @@ height = 512
 r = Raytracer(width,height)
 r.glClearColor(0.2, 0.6, 0.8)
 r.glClear()
+r.envmap = Envmap('envmap.bmp')
 r.pointLight = PointLight(position = (-2,2,0), intensity = 1)
 r.ambientLight = AmbientLight(strength = 0.1)
 

@@ -66,7 +66,7 @@ class Raytracer(object):
 
         self.camPosition = (0,0,0)
         self.fov = 60
-
+        self.envmap = None
         self.scene = []
         self.pointLight = None
         self.ambientLight = None
@@ -251,6 +251,8 @@ class Raytracer(object):
         material, intersect = self.scene_intercept(orig, direction, origObj)
 
         if material is None or recursion >= MAX_RECURSION_DEPTH:
+            if self.envmap:
+                return self.envmap.getColor(direction)
             return self.clear_color
 
         objectColor = [material.diffuse[2] / 255,
