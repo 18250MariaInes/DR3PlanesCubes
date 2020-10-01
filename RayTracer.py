@@ -39,13 +39,14 @@ r.ambientLight = AmbientLight(strength = 0.1)
 r.scene.append( Sphere(( 0, 0, -5), 0.5, stone) )
 r.scene.append( Sphere((-3, 3, -10),  2, mirror) )
 r.scene.append( Sphere((-3, -1.5, -10), 1.5, mirror) )"""
-r.scene.append( Plane(V3(0, -2, 0), V3(0,1,0), stone) )
-r.scene.append( Plane(V3(0, 2, 0), V3(0,1,0), stone) )
-r.scene.append( Plane(V3(0, 0, -10), V3(0,0,1), stone) )
-r.scene.append( Plane(V3( -2,0, 0), V3(1,0,0), stone) )
-r.scene.append( Plane(V3( 2, 0,0), V3(1,0,0), stone) )
+r.scene.append( Plane((0, -2, 0), (0,1,0), stone) )
+r.scene.append( Plane((0, 2, 0), (0,1,0), stone) )
+r.scene.append( Plane((0, 0, -10), (0,0,1), stone) )
+r.scene.append( Plane(( -2,0, 0), (1,0,0), stone) )
+r.scene.append( Plane(( 2, 0,0), (1,0,0), stone) )
 
-r.scene.append( AABB(V3(0, 1.5, -5), 1.5, pink_bow ) )
+r.scene.append( AABB((0, 1.5, -5), 1.5, pink_bow ) )
+r.scene.append( AABB((0, -1.5, -5), 1.5, carrot ) )
 """r.scene.append( AABB(V3(1.5, -1.5, -5), 1.5, mirror ) )
 r.scene.append( AABB(V3(-1.5, -1.5, -5), 1.5, glass ) )"""
 

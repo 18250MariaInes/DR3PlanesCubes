@@ -8,6 +8,7 @@ Carga OBJ
 
 import struct
 import numpy as np
+from mathLib import *
 from numpy import arccos, arctan2 
 
 def color(r, g, b):
@@ -107,7 +108,7 @@ class Envmap(object):
 
     def getColor(self, direction):
         #nos aseguramos que la direccion esta normalizada
-        direction = direction / np.linalg.norm(direction)
+        direction=division(direction, frobenius(direction))
         x = int((arctan2(direction[2], direction[0]) / (2 * np.pi) + 0.5) * self.width)
         y = int(arccos(-direction[1]) /  np.pi * self.height)
 

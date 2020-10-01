@@ -149,14 +149,14 @@ class AABB(object):
 
         halfSize = size / 2
 
-        self.planes.append( Plane( np.add(position, V3(halfSize,0,0)), V3(1,0,0), material))
-        self.planes.append( Plane( np.add(position, V3(-halfSize,0,0)), V3(-1,0,0), material))
+        self.planes.append( Plane( add(position, (halfSize,0,0)), (1,0,0), material))
+        self.planes.append( Plane( add(position, (-halfSize,0,0)), (-1,0,0), material))
 
-        self.planes.append( Plane( np.add(position, V3(0,halfSize,0)), V3(0,1,0), material))
-        self.planes.append( Plane( np.add(position, V3(0,-halfSize,0)), V3(0,-1,0), material))
+        self.planes.append( Plane( add(position, (0,halfSize,0)), (0,1,0), material))
+        self.planes.append( Plane( add(position, (0,-halfSize,0)), (0,-1,0), material))
 
-        self.planes.append( Plane( np.add(position, V3(0,0,halfSize)), V3(0,0,1), material))
-        self.planes.append( Plane( np.add(position, V3(0,0,-halfSize)), V3(0,0,-1), material))
+        self.planes.append( Plane( add(position, (0,0,halfSize)), (0,0,1), material))
+        self.planes.append( Plane( add(position, (0,0,-halfSize)), (0,0,-1), material))
 
 
     def ray_intersect(self, orig, dir):
