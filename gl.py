@@ -329,7 +329,7 @@ class Raytracer(object):
         elif (material.matType== REFLECTIVE):
             reflectp= self.reflectVector(intersect.normal, view_dirp)
             reflectColor = self.castRay(intersect.point, reflectp, intersect.sceneObject, recursion + 1)
-            reflectColor = np.array([reflectColor[2] / 255,
+            reflectColor = ([reflectColor[2] / 255,
                                      reflectColor[1] / 255,
                                      reflectColor[0] / 255])
             finalColorp= sum(reflectColor, multiN((1-shadow_intensity), specColor))

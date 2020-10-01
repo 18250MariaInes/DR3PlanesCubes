@@ -45,7 +45,7 @@ r.scene.append( Plane(V3(0, 0, -10), V3(0,0,1), stone) )
 r.scene.append( Plane(V3( -2,0, 0), V3(1,0,0), stone) )
 r.scene.append( Plane(V3( 2, 0,0), V3(1,0,0), stone) )
 
-r.scene.append( AABB(V3(0, 1.5, -5), 1.5, stone ) )
+r.scene.append( AABB(V3(0, 1.5, -5), 1.5, pink_bow ) )
 """r.scene.append( AABB(V3(1.5, -1.5, -5), 1.5, mirror ) )
 r.scene.append( AABB(V3(-1.5, -1.5, -5), 1.5, glass ) )"""
 

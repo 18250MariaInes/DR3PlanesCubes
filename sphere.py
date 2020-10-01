@@ -113,14 +113,26 @@ class Plane(object):
     def ray_intersect(self, orig, dir):
         # t = (( position - origRayo) dot normal) / (dirRayo dot normal)
 
-        denom = np.dot(dir, self.normal)
+        denom = dot(dir, self.normal[0], self.normal[1], self.normal[2])
+        """print("-----------------------")
+        print(denom)
+        print(dot(dir, self.normal[0], self.normal[1], self.normal[2]))"""
 
         if abs(denom) > 0.0001:
-            t = np.dot(self.normal, np.subtract(self.position, orig)) / denom
+            val2=subtract(self.position[0], orig[0], self.position[1], orig[1], self.position[2], orig[2])
+            t = dot(self.normal, val2[0],val2[1],val2[2])/denom
+            """print("-----------------------")
+            print(np.dot(self.normal, np.subtract(self.position, orig))/ denom)
+            
+            print(dot(self.normal, val2[0],val2[1],val2[2])/denom)"""
             if t > 0:
                 # P = O + tD
-                hit = np.add(orig, t * np.array(dir))
-
+                hit = add(orig, multiN(t, dir))
+                """print("-----------------------")
+                print(np.add(orig, t * np.array(dir)))"""
+                """print(orig)
+                print(t)
+                print(t * np.array(dir))"""
                 return Intersect(distance = t,
                                  point = hit,
                                  normal = self.normal,
