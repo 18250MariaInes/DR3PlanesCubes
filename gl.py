@@ -277,17 +277,14 @@ class Raytracer(object):
 
         if self.pointLight:
             # Sacamos la direccion de la luz para este punto
-            """light_dir = np.subtract(self.pointLight.position, intersect.point)
-            light_dir = light_dir / np.linalg.norm(light_dir)"""
-            #print(light_dir)
+            
             light_dirp = subtract(self.pointLight.position[0], intersect.point[0], self.pointLight.position[1], intersect.point[1], self.pointLight.position[2], intersect.point[2])
             light_dirp = division(light_dirp, frobenius(light_dirp))
             #print(light_dirp)
             #print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
             # Calculamos el valor del diffuse color
-            """intensity = self.pointLight.intensity * max(0, np.dot(light_dir, intersect.normal))
-            print(intensity)"""
+            
             intensityp = self.pointLight.intensity * max(0, dot(light_dirp, intersect.normal[0],intersect.normal[1],intersect.normal[2]))
             #print(intensityp)
             diffuseColor = [intensityp * self.pointLight.color[2] / 255,
@@ -295,13 +292,10 @@ class Raytracer(object):
                                      intensityp * self.pointLight.color[2] / 255]
 
             # Iluminacion especular
-            """view_dir = np.subtract(self.camPosition, intersect.point)
-            view_dir = view_dir / np.linalg.norm(view_dir)
-            print(view_dir)"""
+            
             view_dirp = subtract(self.camPosition[0], intersect.point[0], self.camPosition[1], intersect.point[1], self.camPosition[2], intersect.point[2])
             view_dirp = division(view_dirp, frobenius(view_dirp))
-            """print(view_dirp)
-            print("------------------------------------------------------------------------------")"""
+            
 
             # R = 2 * (N dot L) * N - L
             
@@ -322,14 +316,10 @@ class Raytracer(object):
 
             #print(specColor)
             shadMat, shadInter = self.scene_intercept(intersect.point,  light_dirp, intersect.sceneObject)
-            if shadInter is not None and shadInter.distance < np.linalg.norm(np.subtract(self.pointLight.position, intersect.point)):
+            if shadInter is not None and shadInter.distance < frobenius(subtract(self.pointLight.position[0], intersect.point[0], self.pointLight.position[1], intersect.point[1], self.pointLight.position[2], intersect.point[2] )):
                 shadow_intensity = 1
 
-            """for obj in self.scene:
-                if obj is not intersect.sceneObject:
-                    hit = obj.ray_intersect(intersect.point,  light_dirp)
-                    if hit is not None and intersect.distance < frobenius(subtract(self.pointLight.position[0], intersect.point[0],self.pointLight.position[1], intersect.point[1],self.pointLight.position[2], intersect.point[2])):
-                        shadow_intensity = 1"""
+            
 
         # Formula de iluminacion
         
