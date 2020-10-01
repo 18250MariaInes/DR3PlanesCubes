@@ -103,3 +103,27 @@ class Sphere(object):
                          normal = norm2,
                          sceneObject = self)
 
+class Plane(object):
+    def __init__(self, position, normal, material):
+        self.position = position
+        self.normal = normal / np.linalg.norm(normal)
+        self.material = material
+
+    def ray_intersect(self, orig, dir):
+        # t = (( position - origRayo) dot normal) / (dirRayo dot normal)
+
+        denom = np.dot(dir, self.normal)
+
+        if abs(denom) > 0.0001:
+            t = np.dot(self.normal, np.subtract(self.position, orig)) / denom
+            if t > 0:
+                # P = O + tD
+                hit = np.add(orig, t * np.array(dir))
+
+                return Intersect(distance = t,
+                                 point = hit,
+                                 normal = self.normal,
+                                 sceneObject = self)
+
+        return None
+

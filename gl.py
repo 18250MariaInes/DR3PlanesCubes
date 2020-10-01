@@ -10,6 +10,7 @@ import random
 from mathLib import *
 import numpy as np
 from numpy import cos, sin, tan
+from collections import namedtuple
 
 
 
@@ -20,6 +21,10 @@ OPAQUE = 0
 REFLECTIVE = 1
 TRANSPARENT = 2
 MAX_RECURSION_DEPTH = 3
+
+V2 = namedtuple('Point2', ['x', 'y'])
+V3 = namedtuple('Point3', ['x', 'y', 'z'])
+V4 = namedtuple('Point4', ['x', 'y', 'z','w'])
 
 
 
