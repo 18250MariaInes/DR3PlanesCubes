@@ -2,8 +2,8 @@
 Maria Ines Vasquez Figueroa
 18250
 Gráficas
-DR2 Lights & Shadows
-Sphere
+DR3 Planes & Cubes
+Sphere, Planes and AABB
 """
 
 import numpy as np

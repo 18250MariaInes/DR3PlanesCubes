@@ -2,7 +2,7 @@
 Maria Ines Vasquez Figueroa
 18250
 Gráficas
-DR2 Lights & Shadows
+DR3 Planes & Cubes
 Libreria de operaciones matemáticas
 """
 

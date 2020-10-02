@@ -2,8 +2,8 @@
 Maria Ines Vasquez Figueroa
 18250
 Gráficas
-DR2 Lights & Shadows
-Libreria de operaciones matemáticas
+DR3 Planes & Cubes
+Libreria de operaciones
 """
 import struct
 import random
