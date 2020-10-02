@@ -102,7 +102,7 @@ class Sphere(object):
                          point = hitp,
                          normal = norm2,
                          sceneObject = self)
-
+#clase para plano infinitos
 class Plane(object):
     def __init__(self, position, normal, material):
         self.position = position
@@ -139,7 +139,7 @@ class Plane(object):
                                  sceneObject = self)
 
         return None
-
+#clase para cubos, bounding box
 class AABB(object):
     def __init__(self, position, size, material):
         self.position = position

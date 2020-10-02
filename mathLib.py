@@ -64,10 +64,10 @@ def division(norm, frobenius):
 #realiza producto punto entre la matriz y la luz
 def dot(normal, lightx, lighty, lightz):
     return (normal[0]*lightx+normal[1]*lighty+normal[2]*lightz)
-
+#multiplicacion por constante
 def multiN(c, normal):
     return (normal[0]*c,normal[1]*c,normal[2]*c)
-
+#producto punto de vectores de 4
 def dot4(matrix1, matrix2):
     return (matrix1[0]*matrix2[0]+matrix1[1]*matrix2[1]+matrix1[2]*matrix2[2]+matrix1[3]*matrix2[3])
 
@@ -105,7 +105,7 @@ def multMaster( v, M): #función para multiplicar desde matrices hasta vectores
             temp.append(s)
         c.append(temp)
     return c
-
+#multiplicacion entrada por entrada
 def multColor(v1,v2):
     res=[]
     res.append(v1[0]*v2[0])
